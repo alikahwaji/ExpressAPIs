@@ -1,8 +1,9 @@
-const http = require("http");
+const http = require('http');
+const fs = require('fs')
 
 const server = http.createServer((req, res) => {
     const url = req.url
-
+    const method = req.method
     if (url === '/') {
         res.write('<html>')
         res.write('<head><title>Enter a Message</title></head>')
@@ -12,6 +13,12 @@ const server = http.createServer((req, res) => {
         return res.end()
     }
     // process.exit()
+    if (url === '/message' && method === 'POST') {
+        fs.writeFileSync('message.text', 'Nothing')
+        res.statusCode = 302
+        res.setHeader('Location', '/')
+        return res.end()
+    }
     res.setHeader('Content-Type', 'text/html')
     res.write('<html>')
     res.write('<head><title>My Node Page</title></head>')
